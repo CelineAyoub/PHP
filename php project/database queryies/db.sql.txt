@@ -1,0 +1,119 @@
+-- Students Table
+CREATE TABLE students (
+    student_id INT  PRIMARY KEY, 
+    student_name VARCHAR(30) NOT NULL,
+    email VARCHAR(30) NOT NULL,
+    Acadamic_Year int not null,
+    Major varchar(30) not null
+    
+    -- Add other relevant fiels
+);
+
+
+-- Courses Table
+CREATE TABLE courses (
+    course_id varchar(30) PRIMARY KEY NOT NULL,
+    course_name VARCHAR(50) NOT NULL,
+    numofCredites int not null
+    -- Add other relevant fields
+);
+
+
+-- Enrollments Table (Many-to-Many Relationship between Students and Courses)
+CREATE TABLE enrollments (
+    enrollment_id INT  PRIMARY KEY NOT NULL,
+    student_id INT NOT NULL,
+    course_id VARCHAR(30) NOT NULL,
+    
+    FOREIGN KEY (student_id) REFERENCES student(student_id),
+    FOREIGN KEY (course_id) REFERENCES courses(course_id)
+    
+);
+
+INSERT INTO courses(course_id,course_name,numofCredites) VALUES('I2204','C language',6);
+INSERT INTO enrollments(enrollment_id,student_id,course_id) VALUES(1,103729,'I2204');
+INSERT INTO courses(course_id,course_name,numofCredites) VALUES('I2206','Graph',6);
+INSERT INTO courses(course_id,course_name,numofCredites) VALUES('S220','Stat',4);
+INSERT INTO courses(course_id,course_name,numofCredites) VALUES('M220','Analsys',3);
+INSERT INTO courses(course_id,course_name,numofCredites) VALUES('I2201','Web',6);
+
+3
+
+
+-- Exams Table
+CREATE TABLE Exams (
+    exam_id INT AUTO_INCREMENT PRIMARY KEY,
+    course_id INT,
+    exam_date DATE NOT NULL,
+    score INT NOT NULL,
+    
+    -- Add other relevant fields
+    FOREIGN KEY (course_id) REFERENCES Courses(course_id)
+);
+
+-- Marks (Many-to-Many Relationship between Students and Exams)
+CREATE TABLE examresults (
+    student_id INT,
+    course_id varchar(30),
+    score int ,
+    exam_type varchar(30),
+    
+    -- Add other relevant fields
+    FOREIGN KEY (student_id) REFERENCES students(student_id),
+    FOREIGN KEY (course_id) REFERENCES courses(course_id)
+   
+  
+);
+
+
+-- Add more tables as needed based on your requirements
+INSERT INTO examresults(student_id,course_id,score,exam_type) VALUES(103729,'I2204',40,'final');
+INSERT INTO examresults(student_id,course_id,score,exam_type) VALUES(103729,'M220',25,'partial');
+INSERT INTO examresults(student_id,course_id,score,exam_type) VALUES(103729,'M220',60,'final');
+INSERT INTO examresults(student_id,course_id,score,exam_type) VALUES(103729,'S2204',25,'partial');
+INSERT INTO examresults(student_id,course_id,score,exam_type) VALUES(103729,'S2204',60,'final');
+CREATE TABLE notifications (
+    notification_id INT PRIMARY KEY AUTO_INCREMENT,
+    student_id INT,  -- or user_id, depending on your user system
+    message VARCHAR(255),
+ 
+);
+CREATE TABLE student_calendar (
+    calendar_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    student_id INT NOT NULL,
+    course_id VARCHAR(30) NOT NULL,
+    day_of_week VARCHAR(10) NOT NULL,
+    
+    -- Add other relevant fields for the calendar, such as start_time, end_time, etc.
+
+    FOREIGN KEY (student_id) REFERENCES students(student_id),
+    FOREIGN KEY (course_id) REFERENCES courses(course_id)
+);
+INSERT INTO student_calendar (student_id, course_id, day_of_week)
+VALUES
+    (103729, 'I2204', 'Monday'),
+    (103729, 'I2206', 'Tuesday'),
+    (103729, 'S220', 'Wednesday'),
+    (103729, 'M220', 'Thursday'),
+    (103729, 'I2201', 'Friday');
+CREATE TABLE Teacher(
+  Teacher_id int not null,
+	Techer_name varchar(30) not  null,
+    day_of_teaching  Date not null,
+    hours  Time not null,
+    student_id int not null,
+    course_id varchar(30) not null,
+    PRIMARY KEY(Teacher_id),
+     
+    FOREIGN KEY (student_id) REFERENCES student(student_id),
+    FOREIGN KEY (course_id) REFERENCES courses(course_id)
+    
+    
+  
+    
+    
+    
+   
+    
+    
+ );
